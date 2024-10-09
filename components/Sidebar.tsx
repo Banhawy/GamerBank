@@ -21,7 +21,7 @@ const Sidebar = ({
                         height={34}
                         className='size-[24px] max-xl:size-14'
                     />
-                    <h1 className="sidebar-logo">GGB</h1>
+                    <h1 className="sidebar-logo">PlayPal</h1>
                 </Link>
 
                 {sidebarLinks.map((item) => {

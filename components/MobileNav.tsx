@@ -35,7 +35,7 @@ const MobileNav = ({ user }: MobileNavProps) => {
                             height={34}
                             className='size-[24px] max-xl:size-14'
                         />
-                        <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">GGB</h1>
+                        <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">PlayPal</h1>
                     </Link>
 
                     <div className="mobilenav-sheet">
