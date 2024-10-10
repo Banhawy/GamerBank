@@ -12,8 +12,11 @@ import { Loader2 } from "lucide-react"
 
 import CustomInput from './CustomInput';
 import { authFormSchema } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
+import { signIn, signUp } from '@/lib/actions/user.actions';
 
 const AuthForm = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
+    const router = useRouter()
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
@@ -27,10 +30,32 @@ const AuthForm = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true)
-        console.log(values)
-        setIsLoading(false)
+        try {
+            // Sign up with Appwrite & creat plain link token
+
+            if (type === 'sign-up') {
+                const newUser = await signUp(values);
+
+                setUser(newUser);
+            } 
+
+            if (type === 'sign-in') {
+                const response = await signIn({
+                    email: values.email,
+                    password: values.password
+                })
+
+                if (response) router.push('/')
+            }
+            
+        } catch (error) {
+            console.log(error)
+            
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -91,6 +116,12 @@ const AuthForm = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
                                         label='Address'
                                         name='address1'
                                         placeholder='Enter your address'
+                                    />
+                                    <CustomInput
+                                        control={form.control}
+                                        label='City'
+                                        name='city'
+                                        placeholder='Enter your city'
                                     />
                                     <div className="flex gap-4">
                                         <CustomInput

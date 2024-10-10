@@ -1,9 +1,10 @@
 import HeaderBox from "@/components/HeaderBox";
 import RightSidebar from "@/components/RightSidebar";
 import TotalBalanceBox from "@/components/TotalBalanceBox";
+import { getLoggedInUser } from "@/lib/actions/user.actions";
 
-const Home = () => {
-    const loggenIn = { firstName: 'Adham', lastName: 'Sweidan', email: 'adham@elbanhawy.com'};
+const Home = async () => {
+    const loggenIn = await getLoggedInUser();
     return (
         <section className="home">
             <div className="home-content">
@@ -13,13 +14,13 @@ const Home = () => {
                         title="Welcome"
                         user={loggenIn?.firstName || 'Guest'}
                         subtext="Access and manage your account and transactions efficiently."
-                        />
-                    
+                    />
+
                     <TotalBalanceBox
                         accounts={[]}
                         totalBanks={1}
                         totalCurrentBalance={1250.35}
-                        />
+                    />
                 </header>
 
                 Recent TRX
@@ -29,7 +30,7 @@ const Home = () => {
                 user={loggenIn}
                 transactions={[]}
                 banks={[{ currentBalance: 123.50 }, { currentBalance: 500 }]}
-                />
+            />
         </section>
     );
 }
