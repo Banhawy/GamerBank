@@ -14,6 +14,7 @@ import CustomInput from './CustomInput';
 import { authFormSchema } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { signIn, signUp } from '@/lib/actions/user.actions';
+import PlaidLink from './PlaidLink';
 
 const AuthForm = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
     const router = useRouter()
@@ -36,10 +37,21 @@ const AuthForm = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
             // Sign up with Appwrite & creat plain link token
 
             if (type === 'sign-up') {
-                const newUser = await signUp(values);
+                const userData = {
+                    firstName: values.firstName!,
+                    lastName: values.lastName!,
+                    address1: values.address1!,
+                    city: values.city!,
+                    state: values.state!,
+                    postalCode: values.postalCode!,
+                    dateOfBirth: values.dateOfBirth!,
+                    ssn: values.ssn!,
+                    ...values
+                }
+                const newUser = await signUp(userData);
 
                 setUser(newUser);
-            } 
+            }
 
             if (type === 'sign-in') {
                 const response = await signIn({
@@ -49,10 +61,10 @@ const AuthForm = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
 
                 if (response) router.push('/')
             }
-            
+
         } catch (error) {
             console.log(error)
-            
+
         } finally {
             setIsLoading(false)
         }
@@ -89,7 +101,7 @@ const AuthForm = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
             </header>
             {user ? (
                 <div className="flex flex-col gap-4">
-                    {/* PLaid Link */}
+                    <PlaidLink user={user} variant="primary" />
                 </div>
             ) : (
                 <>
@@ -141,7 +153,7 @@ const AuthForm = ({ type }: { type: 'sign-in' | 'sign-up' }) => {
                                         <CustomInput
                                             control={form.control}
                                             label='Date of Birth'
-                                            name='dob'
+                                            name='dateOfBirth'
                                             placeholder='YYYY-MM-DD'
                                         />
                                         <CustomInput
